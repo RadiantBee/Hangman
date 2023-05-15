@@ -1,1 +1,3 @@
-﻿
+﻿  Source.cpp
+D:\Рабочий стол\hangman\Hangman\Source.cpp(112,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Hangman.vcxproj -> D:\Рабочий стол\hangman\Hangman\x64\Debug\Hangman.exe
