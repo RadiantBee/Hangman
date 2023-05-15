@@ -48,7 +48,7 @@ public:
 	}
 	bool find(char letter)
 	{
-		if (_wordFound.find(letter) != -1 && _wordFound.find(toupper(letter)) != -1)// if letter was already guessed
+		if (_wordFound.find(letter) != -1 || _wordFound.find(toupper(letter)) != -1)// if letter was already guessed
 		{
 			return true;
 		}
@@ -74,6 +74,10 @@ public:
 	bool isFound()
 	{
 		return (_lettersFound == _letters);
+	}
+	int lettersFound()
+	{
+		return _lettersFound;
 	}
 };
 
@@ -148,12 +152,14 @@ public:
 		}
 	}
 
-	void playerTurn(GameWord& word, int _attemps)
+	void playerTurn(GameWord& word, int& _attemps)
 	{
 		string choise;// in case there are more that 1 character
 		system("cls");
 		loadScreen(_attemps);
 		word.showFound();
+		cout << "Letters found: " << word.lettersFound() << "\n";
+		cout << "Attemps left: " << _attemps << "\n";
 		cout << "Enter a letter: "; cin >> choise;
 		if (!word.find(tolower(choise[0])))
 		{
@@ -167,16 +173,22 @@ public:
 		{
 			GameWord word;
 			word.setRandom();
-			_attemps = 6;
+			_attemps = 6; 
+			_didWin = 0;
 			while (!_didWin) // loop for one game
 			{
 				playerTurn(word, _attemps);
 				if (word.isFound())
 					_didWin = true;
-				if (_attemps == 0)
+				else if (_attemps == 0)
 					break;
 			}
-			
+			if (_didWin)
+				cout << "You won!\n";
+			else
+				cout << "You lost!\n";
+			cout << "The word was: " << word.getWord() << "\n";
+			cout << "In ordrer to exit press 0... "; cin >> _gameRepeat;
 		}
 	}
 };
