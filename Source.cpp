@@ -1,9 +1,28 @@
 #include <iostream>
-#include <fstream>
-#include <string>
-
+#include <fstream>// files
+#include <string> // getline
+#include <chrono> // time
 
 using namespace std;
+
+/*	Encrypting file with words
+
+	ifstream file{ "words.txt" };
+	ofstream fileout{ "out.txt "};
+	string test;
+	while (file.is_open() && fileout.is_open())
+	{
+		for (int i = 0; i < 416354; i++)
+		{
+			getline(file, test);
+			for(int i = 0; i < test.length(); i++)
+				test[i] = tolower(test[i]) - 64;
+			fileout << test << "\n";
+		}
+		file.close();
+	}
+	*/
+
 
 class GameWord
 {
@@ -22,15 +41,17 @@ public:
 	}
 	void setRandom()
 	{
-		ifstream file{ "words.txt" };
+		ifstream file{ "out.txt" };
 		while (file.is_open())
 		{
-			for (int i = 0; i < rand() % 466427; i++)//counting amount of the lines is taking too much time
+			for (int i = 0; i < rand() % 416354; i++)//counting amount of the lines is taking too much time
 			{
 				getline(file, _word);
 			}
 			file.close();
 		}
+		for (int i = 0; i < _word.length(); i++)
+			_word[i] += 64;
 		_letters = _word.length();
 		_lettersFound = 0;
 		_wordFound.clear();
@@ -48,22 +69,17 @@ public:
 	}
 	bool find(char letter)
 	{
-		if (_wordFound.find(letter) != -1 || _wordFound.find(toupper(letter)) != -1)// if letter was already guessed
+		if (_wordFound.find(letter) != -1)// if letter was already guessed
 		{
 			return true;
 		}
-		else if(_word.find(letter) != -1 || _word.find(toupper(letter)) != -1)// if there is letter
+		else if(_word.find(letter) != -1)// if there is letter
 		{
 			for (int i = 0; i < _letters; i++)
 			{
 				if (_word[i] == letter)
 				{
 					_wordFound[i] = letter;
-					_lettersFound++;
-				}
-				if (_word[i] == toupper(letter))
-				{
-					_wordFound[i] = toupper(letter);
 					_lettersFound++;
 				}
 			}
@@ -171,6 +187,7 @@ public:
 		srand(time(0));
 		while (_gameRepeat) // loop for repeating the game
 		{
+			auto start = chrono::high_resolution_clock::now();
 			GameWord word;
 			word.setRandom();
 			_attemps = 6; 
@@ -183,11 +200,16 @@ public:
 				else if (_attemps == 0)
 					break;
 			}
+			system("cls");
+			loadScreen(_attemps);
+			word.showFound();
+			cout << "Attemps left out of 6: " << _attemps << "\n";
 			if (_didWin)
 				cout << "You won!\n";
 			else
 				cout << "You lost!\n";
 			cout << "The word was: " << word.getWord() << "\n";
+			cout << "Time spent: " << chrono::duration_cast<chrono::seconds>(chrono::high_resolution_clock::now() - start).count() << " seconds\n";
 			cout << "In ordrer to exit press 0... "; cin >> _gameRepeat;
 		}
 	}

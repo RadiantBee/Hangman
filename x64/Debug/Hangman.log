@@ -1,1 +1,4 @@
-﻿  Hangman.vcxproj -> D:\Рабочий стол\hangman\Hangman\x64\Debug\Hangman.exe
+﻿  Source.cpp
+D:\Рабочий стол\hangman\Hangman\Source.cpp(54,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Рабочий стол\hangman\Hangman\Source.cpp(186,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Hangman.vcxproj -> D:\Рабочий стол\hangman\Hangman\x64\Debug\Hangman.exe
