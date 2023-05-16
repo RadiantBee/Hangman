@@ -27,6 +27,7 @@ using namespace std;
 class GameWord
 {
 private:
+	string _lettersTried;
 	string _word;
 	string _wordFound;
 	int _letters;
@@ -36,6 +37,7 @@ public:
 	{
 		_word = "";
 		_wordFound = "";
+		_lettersTried = "";
 		_letters = 0;
 		_lettersFound = 0;
 	}
@@ -56,6 +58,7 @@ public:
 		_lettersFound = 0;
 		_wordFound.clear();
 		_wordFound = "";
+		_lettersTried = "";
 		for (int i = 0; i < _letters; i++)
 			_wordFound.append("_");
 	}
@@ -73,7 +76,7 @@ public:
 		{
 			return true;
 		}
-		else if(_word.find(letter) != -1)// if there is letter
+		else if (_word.find(letter) != -1)// if there is letter
 		{
 			for (int i = 0; i < _letters; i++)
 			{
@@ -85,15 +88,20 @@ public:
 			}
 			return true;
 		}
+		_lettersTried += letter;
 		return false;
 	}
 	bool isFound()
 	{
 		return (_lettersFound == _letters);
 	}
-	int lettersFound()
+	int getLettersFound()
 	{
 		return _lettersFound;
+	}
+	string getLettersTried()
+	{
+		return _lettersTried;
 	}
 };
 
@@ -174,7 +182,7 @@ public:
 		system("cls");
 		loadScreen(_attemps);
 		word.showFound();
-		cout << "Letters found: " << word.lettersFound() << "\n";
+		cout << "Letters found: " << word.getLettersFound() << "\n";
 		cout << "Attemps left: " << _attemps << "\n";
 		cout << "Enter a letter: "; cin >> choise;
 		if (!word.find(tolower(choise[0])))
@@ -204,6 +212,7 @@ public:
 			loadScreen(_attemps);
 			word.showFound();
 			cout << "Attemps left out of 6: " << _attemps << "\n";
+			cout << "You wrong guesses: " << word.getLettersTried() << "\n";
 			if (_didWin)
 				cout << "You won!\n";
 			else
